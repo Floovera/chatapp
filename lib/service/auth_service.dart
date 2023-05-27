@@ -1,3 +1,4 @@
+import 'package:demo/helper/helper_function.dart';
 import 'package:demo/service/database_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -20,5 +21,16 @@ class AuthService{
     } on FirebaseAuthException
         catch (e){ return e.message; }
   }
-  //logout
+  //signout
+
+  Future signOut() async {
+    try {
+      await HelperFunctions.saveUserLoggedInStatus(false);
+      await HelperFunctions.saveUserEmailSF("");
+      await HelperFunctions.saveUserNameSF("");
+      await firebaseAuth.signOut();
+    } catch (e) {
+      return null;
+    }
+  }
 }

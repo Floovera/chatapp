@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
         scaffoldBackgroundColor: Colors.white),
 
       debugShowCheckedModeBanner: false,
-      home: _isSignedIn ? HomePage() : LoginPage(),
+      home: _isSignedIn ? const HomePage() : const LoginPage(),
 
     );
   }
