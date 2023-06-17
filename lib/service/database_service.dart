@@ -29,6 +29,62 @@ class DatabaseService{
     return userCollection.doc(uid).snapshots();
   }
 
+  // getting the chats
+  getChats(String groupId) async {
+    return groupCollection
+        .doc(groupId)
+        .collection("messages")
+        .orderBy("time")
+        .snapshots();
+  }
+
+  // search
+  searchByName(String groupName) {
+    return groupCollection.where("groupName", isEqualTo: groupName).get();
+  }
+
+  // has user already joined the group
+  Future<bool> isUserJoined(String groupName, String groupId, String userName) async {
+    DocumentReference userDocumentReference = userCollection.doc(uid);
+    DocumentSnapshot documentSnapshot = await userDocumentReference.get();
+
+    List<dynamic> groups = await documentSnapshot['groups'];
+    if (groups.contains("${groupId}_$groupName")) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // toggling the group exit or join
+  Future toggleGroupJoin(
+      String groupId, String userName, String groupName) async {
+    // doc reference
+    DocumentReference userDocumentReference = userCollection.doc(uid);
+    DocumentReference groupDocumentReference = groupCollection.doc(groupId);
+
+    DocumentSnapshot documentSnapshot = await userDocumentReference.get();
+    List<dynamic> groups = await documentSnapshot['groups'];
+
+    // exit or join
+    if (groups.contains("${groupId}_$groupName")) {
+      await userDocumentReference.update({
+        "groups": FieldValue.arrayRemove(["${groupId}_$groupName"])
+      });
+      await groupDocumentReference.update({
+        "members": FieldValue.arrayRemove(["${uid}_$userName"])
+      });
+    } else {
+      await userDocumentReference.update({
+        "groups": FieldValue.arrayUnion(["${groupId}_$groupName"])
+      });
+      await groupDocumentReference.update({
+        "members": FieldValue.arrayUnion(["${uid}_$userName"])
+      });
+    }
+  }
+
+
   // creating a group
   Future createGroup(String userName, String id, String groupName) async {
     DocumentReference groupDocumentReference = await groupCollection.add({
@@ -52,4 +108,7 @@ class DatabaseService{
       "groups":
       FieldValue.arrayUnion(["${groupDocumentReference.id}_$groupName"])
     });
+
+
   }}
+
