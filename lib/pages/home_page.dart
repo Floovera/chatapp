@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               onPressed: () {
-                nextScreen(context, const SearchPage());
+                nextScreenReplace(context, const SearchPage());
               },
               icon: const Icon(
                 Icons.search,
@@ -85,6 +85,8 @@ class _HomePageState extends State<HomePage> {
         ),
         ListTile(
               onTap: () {},
+              selected: true,
+              selectedColor: Theme.of(context).primaryColor,
               contentPadding:
               const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               leading: const Icon(Icons.group),
@@ -95,7 +97,9 @@ class _HomePageState extends State<HomePage> {
             ),
         ListTile(
           onTap: () {
-            nextScreen(context, const ProfilePage()); 
+            nextScreenReplace(context,ProfilePage(
+              userName: userName,
+              email: email,));
           },
           contentPadding:
           const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
