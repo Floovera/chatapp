@@ -19,6 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
       elevation: 0,
       centerTitle: true,
@@ -122,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           )
       ),
-      body: Container(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 170),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

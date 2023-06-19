@@ -87,6 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         const SizedBox(height: 10),
                         TextFormField(
+                            obscureText: true,
                             decoration: textInputDecoration.copyWith(
                               labelText: "Password",
                               prefix: Icon(Icons.lock,
